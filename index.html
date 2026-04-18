@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050010">
+<title>SER vs ESTAR // Conjugation Matrix</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    color-scheme: dark;
+    --bg: #050010;
+    --panel: #12002a;
+    --cyan: #00f0ff;
+    --magenta: #ff2ef0;
+    --yellow: #fff200;
+    --green: #39ff14;
+    --text: #f0f0ff;
+    --dim: #9a8ac0;
+  }
+
+  html, body {
+    background: #050010 !important;
+    background-color: #050010 !important;
+    color: #f0f0ff;
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    background-color: #050010;
+    background-image:
+      linear-gradient(rgba(0, 240, 255, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 46, 240, 0.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridShift 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gridShift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(40px, 40px); }
+  }
+
+  .bg-scan {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 240, 255, 0.04) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    background: transparent;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding: 20px 10px;
+    border: 1px solid var(--cyan);
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(255, 46, 240, 0.08)), rgba(5, 0, 16, 0.95);
+    position: relative;
+  }
+
+  header::before, header::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--magenta);
+    border-style: solid;
+  }
+  header::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+  header::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    background: linear-gradient(90deg, #00f0ff, #ff2ef0, #fff200);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: titleGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes titleGlow {
+    0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+    50% { filter: brightness(1.3) hue-rotate(20deg); }
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--dim);
+    margin-top: 8px;
+    letter-spacing: 0.3em;
+  }
+
+  .verb-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .verb-btn {
+    background: rgba(15, 0, 32, 0.95);
+    border: 2px solid var(--dim);
+    color: var(--text);
+    padding: 12px 28px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .verb-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .verb-btn:hover::before { transform: translateX(100%); }
+
+  .verb-btn.active[data-verb="ser"] {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(0, 240, 255, 0.12);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.15);
+  }
+
+  .verb-btn.active[data-verb="estar"] {
+    border-color: var(--magenta);
+    color: var(--magenta);
+    background: rgba(255, 46, 240, 0.12);
+    box-shadow: 0 0 20px rgba(255, 46, 240, 0.6), inset 0 0 20px rgba(255, 46, 240, 0.15);
+  }
+
+  .verb-btn.active[data-verb="both"] {
+    border-color: var(--yellow);
+    color: var(--yellow);
+    background: rgba(255, 242, 0, 0.12);
+    box-shadow: 0 0 20px rgba(255, 242, 0, 0.6), inset 0 0 20px rgba(255, 242, 0, 0.15);
+  }
+
+  .tense-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tense-tab {
+    background: rgba(15, 0, 32, 0.95);
+    border: 1px solid var(--dim);
+    color: var(--dim);
+    padding: 8px 18px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .tense-tab.active {
+    background: rgba(0, 240, 255, 0.18);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+  }
+
+  .tense-tab:hover:not(.active) {
+    color: var(--text);
+    border-color: var(--text);
+  }
+
+  .chart-wrap {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .chart-wrap.split {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 700px) {
+    .chart-wrap.split { grid-template-columns: 1fr; }
+  }
+
+  .verb-card {
+    border: 2px solid;
+    padding: 20px;
+    background: rgba(8, 0, 20, 0.98);
+    position: relative;
+    animation: cardIn 0.5s ease-out;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .verb-card.ser {
+    border-color: var(--cyan);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+  }
+
+  .verb-card.estar {
+    border-color: var(--magenta);
+    box-shadow: 0 0 30px rgba(255, 46, 240, 0.3);
+  }
+
+  .verb-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px dashed currentColor;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+
+  .verb-name {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+  }
+
+  .verb-card.ser .verb-name { color: var(--cyan); }
+  .verb-card.estar .verb-name { color: var(--magenta); }
+
+  .verb-tag {
+    font-size: 0.7rem;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+  }
+
+  .conjugation-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+  }
+
+  .conjugation-table tr {
+    border-bottom: 1px solid rgba(154, 138, 192, 0.2);
+    transition: background 0.2s;
+  }
+
+  .conjugation-table tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .conjugation-table td {
+    padding: 10px 8px;
+    font-size: 0.95rem;
+  }
+
+  .pronoun {
+    color: var(--dim);
+    width: 45%;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+
+  .form {
+    font-weight: bold;
+    font-size: 1.05rem;
+    text-align: right;
+    letter-spacing: 0.05em;
+  }
+
+  .verb-card.ser .form {
+    color: #a0faff;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+  }
+
+  .verb-card.estar .form {
+    color: #ffa8f5;
+    text-shadow: 0 0 8px rgba(255, 46, 240, 0.6);
+  }
+
+  .irregular {
+    color: var(--yellow) !important;
+    text-shadow: 0 0 10px rgba(255, 242, 0, 0.7) !important;
+  }
+
+  .irregular::after {
+    content: '◆';
+    font-size: 0.6rem;
+    margin-left: 4px;
+    vertical-align: super;
+    color: var(--yellow);
+  }
+
+  .notes {
+    margin-top: 24px;
+    padding: 16px;
+    border-left: 3px solid var(--green);
+    background: rgba(15, 0, 32, 0.95);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .notes-title {
+    color: var(--green);
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+  }
+
+  .notes ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .notes li {
+    padding: 4px 0 4px 20px;
+    position: relative;
+    color: var(--text);
+  }
+
+  .notes li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+  }
+
+  .notes strong { color: var(--cyan); }
+  .notes em { color: var(--magenta); font-style: normal; }
+
+  .legend {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--dim);
+    margin-top: 16px;
+    letter-spacing: 0.15em;
+  }
+
+  .legend .yellow { color: var(--yellow); }
+</style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-scan"></div>
+
+  <div class="container">
+    <header>
+      <h1>SER // ESTAR</h1>
+      <div class="subtitle">◢ CONJUGATION MATRIX ◣ INDICATIVO ◆ PRETÉRITO ◆ IMPERFECTO ◣</div>
+    </header>
+
+    <div class="verb-toggle">
+      <button class="verb-btn active" data-verb="both">BOTH</button>
+      <button class="verb-btn" data-verb="ser">SER</button>
+      <button class="verb-btn" data-verb="estar">ESTAR</button>
+    </div>
+
+    <div class="tense-tabs">
+      <button class="tense-tab active" data-tense="presente">Presente</button>
+      <button class="tense-tab" data-tense="preterito">Pretérito</button>
+      <button class="tense-tab" data-tense="imperfecto">Imperfecto</button>
+    </div>
+
+    <div class="chart-wrap split" id="chartWrap"></div>
+
+    <div class="notes" id="notes"></div>
+
+    <div class="legend">
+      <span class="yellow">◆</span> = IRREGULAR FORM
+    </div>
+  </div>
+
+<script>
+  const data = {
+    ser: {
+      label: 'to be (permanent)',
+      presente: { yo: 'soy', tu: 'eres', el: 'es', nos: 'somos', vos: 'sois', ellos: 'son' },
+      preterito: { yo: 'fui', tu: 'fuiste', el: 'fue', nos: 'fuimos', vos: 'fuisteis', ellos: 'fueron' },
+      imperfecto: { yo: 'era', tu: 'eras', el: 'era', nos: 'éramos', vos: 'erais', ellos: 'eran' },
+      irregular: {
+        presente: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos'],
+        preterito: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos'],
+        imperfecto: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos']
+      }
+    },
+    estar: {
+      label: 'to be (temporary)',
+      presente: { yo: 'estoy', tu: 'estás', el: 'está', nos: 'estamos', vos: 'estáis', ellos: 'están' },
+      preterito: { yo: 'estuve', tu: 'estuviste', el: 'estuvo', nos: 'estuvimos', vos: 'estuvisteis', ellos: 'estuvieron' },
+      imperfecto: { yo: 'estaba', tu: 'estabas', el: 'estaba', nos: 'estábamos', vos: 'estabais', ellos: 'estaban' },
+      irregular: {
+        presente: ['yo', 'tu', 'el', 'ellos'],
+        preterito: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos'],
+        imperfecto: []
+      }
+    }
+  };
+
+  const pronouns = [
+    { key: 'yo', label: 'yo' },
+    { key: 'tu', label: 'tú' },
+    { key: 'el', label: 'él / ella / usted' },
+    { key: 'nos', label: 'nosotros' },
+    { key: 'vos', label: 'vosotros' },
+    { key: 'ellos', label: 'ellos / ustedes' }
+  ];
+
+  const notes = {
+    presente: {
+      title: 'PRESENTE // USAGE',
+      content: `
+        <li><strong>SER</strong> → identity, origin, profession, characteristics, time. <em>Soy profesor. Es lunes.</em></li>
+        <li><strong>ESTAR</strong> → location, emotions, temporary states, ongoing actions. <em>Estoy cansado. Está en Austin.</em></li>
+        <li>Memory trick: <strong>DOCTOR</strong> (Description, Occupation, Characteristic, Time, Origin, Relationship) = SER</li>
+        <li>Memory trick: <strong>PLACE</strong> (Position, Location, Action, Condition, Emotion) = ESTAR</li>
+      `
+    },
+    preterito: {
+      title: 'PRETÉRITO // USAGE',
+      content: `
+        <li><strong>Completed past actions</strong> with a defined beginning/end. <em>Fui al cine ayer.</em></li>
+        <li><strong>SER</strong> preterite = <strong>IR</strong> preterite (identical forms). Context tells you which verb it is.</li>
+        <li><em>Fui estudiante</em> (I was a student) vs <em>Fui a la tienda</em> (I went to the store).</li>
+        <li><strong>ESTAR</strong> preterite often implies a condition that happened and ended. <em>Estuve enfermo la semana pasada.</em></li>
+      `
+    },
+    imperfecto: {
+      title: 'IMPERFECTO // USAGE',
+      content: `
+        <li><strong>Ongoing, habitual, or background</strong> past actions. Used for descriptions, age, time, weather.</li>
+        <li><strong>SER</strong> imperfect → describing what something/someone <em>was like</em>. <em>Era alto y callado.</em></li>
+        <li><strong>ESTAR</strong> imperfect → describing states or locations in the past. <em>Estaba en casa cuando llamaste.</em></li>
+        <li>Key contrast: <em>Fui feliz</em> (I was happy — a defined period) vs <em>Era feliz</em> (I was happy — ongoing state).</li>
+      `
+    }
+  };
+
+  let currentVerb = 'both';
+  let currentTense = 'presente';
+
+  function renderCards() {
+    const wrap = document.getElementById('chartWrap');
+    wrap.innerHTML = '';
+    wrap.classList.toggle('split', currentVerb === 'both');
+
+    const verbs = currentVerb === 'both' ? ['ser', 'estar'] : [currentVerb];
+
+    verbs.forEach(v => {
+      const verbData = data[v];
+      const forms = verbData[currentTense];
+      const irregs = verbData.irregular[currentTense];
+
+      const rows = pronouns.map(p => {
+        const isIrr = irregs.includes(p.key);
+        return `
+          <tr>
+            <td class="pronoun">${p.label}</td>
+            <td class="form ${isIrr ? 'irregular' : ''}">${forms[p.key]}</td>
+          </tr>
+        `;
+      }).join('');
+
+      const card = document.createElement('div');
+      card.className = `verb-card ${v}`;
+      card.innerHTML = `
+        <div class="verb-header">
+          <div class="verb-name">${v.toUpperCase()}</div>
+          <div class="verb-tag">${verbData.label}</div>
+        </div>
+        <table class="conjugation-table">${rows}</table>
+      `;
+      wrap.appendChild(card);
+    });
+
+    const notesEl = document.getElementById('notes');
+    const n = notes[currentTense];
+    notesEl.innerHTML = `
+      <div class="notes-title">◣ ${n.title} ◤</div>
+      <ul>${n.content}</ul>
+    `;
+  }
+
+  document.querySelectorAll('.verb-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.verb-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentVerb = btn.dataset.verb;
+      renderCards();
+    });
+  });
+
+  document.querySelectorAll('.tense-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tense-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTense = tab.dataset.tense;
+      renderCards();
+    });
+  });
+
+  renderCards();
+</script>
+</body>
+</html>
