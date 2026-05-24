@@ -1,538 +1,828 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#050010">
-<title>SER vs ESTAR // Conjugation Matrix</title>
+<title>SER // ESTAR</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-  :root {
-    color-scheme: dark;
-    --bg: #050010;
-    --panel: #12002a;
-    --cyan: #00f0ff;
-    --magenta: #ff2ef0;
-    --yellow: #fff200;
-    --green: #39ff14;
-    --text: #f0f0ff;
-    --dim: #9a8ac0;
-  }
+:root {
+  --bg0:#080a12;
+  --bg1:#0c0f1a;
+  --bg2:#111520;
+  --bg3:#161b2a;
+  --bg4:#1c2235;
+  --grid-color:rgba(0,255,200,0.06);
+  --border-dim:#1e2a40;
 
-  html, body {
-    background: #050010 !important;
-    background-color: #050010 !important;
-    color: #f0f0ff;
-    font-family: 'Courier New', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  --pink:#ff2d9b;
+  --pink2:#ff6ec7;
+  --pink-glow:rgba(255,45,155,0.35);
+  --cyan:#00e5ff;
+  --cyan2:#80f0ff;
+  --cyan-glow:rgba(0,229,255,0.3);
+  --yellow:#f5e642;
+  --yellow2:#fff176;
+  --yellow-glow:rgba(245,230,66,0.3);
+  --magenta:#d400ff;
+  --magenta2:#e980ff;
+  --magenta-glow:rgba(212,0,255,0.3);
+  --green:#00ff9f;
+  --green2:#80ffcf;
+  --green-glow:rgba(0,255,159,0.25);
+  --orange:#ff9f00;
+  --orange2:#ffcc66;
+  --red:#ff4455;
+  --red2:#ff8899;
+  --blue:#4499ff;
+  --blue2:#99ccff;
 
-  .bg-grid {
-    position: fixed;
-    inset: 0;
-    background-color: #050010;
-    background-image:
-      linear-gradient(rgba(0, 240, 255, 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 46, 240, 0.12) 1px, transparent 1px);
-    background-size: 40px 40px;
-    animation: gridShift 20s linear infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
+  --txt0:#e0eeff;
+  --txt1:#7090b0;
+  --txt2:#3a5570;
+  --txt3:#1e3050;
+  --mono:'Share Tech Mono','Courier New',monospace;
+}
+[data-theme="light"] {
+  --bg0:#e8ecf5;--bg1:#f0f4fc;--bg2:#f8faff;--bg3:#eef2fa;--bg4:#e4eaf5;
+  --grid-color:rgba(0,100,180,0.06);--border-dim:#c0cce0;
+  --pink:#c0006a;--pink2:#e0408a;--pink-glow:rgba(192,0,106,0.15);
+  --cyan:#006a90;--cyan2:#0090b8;--cyan-glow:rgba(0,106,144,0.15);
+  --yellow:#806000;--yellow2:#a07800;--yellow-glow:rgba(128,96,0,0.1);
+  --magenta:#8000c0;--magenta2:#a030d8;--magenta-glow:rgba(128,0,192,0.12);
+  --green:#006040;--green2:#008858;--green-glow:rgba(0,96,64,0.1);
+  --orange:#904000;--orange2:#b06000;--red:#900020;--red2:#b03040;
+  --blue:#0040a0;--blue2:#2060c0;
+  --txt0:#0a1628;--txt1:#2a4060;--txt2:#5a7090;--txt3:#8090b0;
+}
 
-  @keyframes gridShift {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(40px, 40px); }
-  }
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg0);min-height:100vh;color:var(--txt0);font-family:var(--mono);font-size:13px;transition:background 0.2s,color 0.2s;}
+body{padding:1.25rem;}
 
-  .bg-scan {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0) 0px,
-      rgba(0, 0, 0, 0) 2px,
-      rgba(0, 240, 255, 0.04) 3px,
-      rgba(0, 0, 0, 0) 4px
-    );
-    pointer-events: none;
-    z-index: 1;
-  }
+.grid-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+  background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+  background-size:40px 40px;z-index:0;}
+.app{max-width:1000px;margin:0 auto;position:relative;z-index:1;}
 
-  .container {
-    position: relative;
-    z-index: 2;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px 16px;
-    background: transparent;
-  }
+/* ── HEADER ── */
+.header{border:2px solid var(--pink);border-radius:3px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;background:var(--bg1);position:relative;overflow:hidden;text-align:center;box-shadow:0 0 30px var(--pink-glow),inset 0 0 40px rgba(255,45,155,0.04);}
+.header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--pink),var(--cyan),var(--pink),transparent);}
+.header-title{font-size:42px;font-weight:bold;letter-spacing:0.2em;color:var(--pink);text-shadow:0 0 20px var(--pink-glow),0 0 40px var(--pink-glow);margin-bottom:8px;}
+.header-sub{font-size:10px;letter-spacing:0.2em;color:var(--txt1);display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;}
+.header-sub span{display:flex;align-items:center;gap:6px;}
+.header-sub .dot{color:var(--cyan);font-size:8px;}
+.header-meta{position:absolute;top:10px;right:12px;display:flex;gap:6px;align-items:center;}
+.theme-btn{background:var(--bg3);border:1px solid var(--cyan);padding:4px 10px;font-size:9px;cursor:pointer;color:var(--cyan);font-family:var(--mono);letter-spacing:0.1em;transition:all 0.15s;border-radius:2px;}
+.theme-btn:hover{background:var(--cyan);color:var(--bg0);}
 
-  header {
-    text-align: center;
-    margin-bottom: 28px;
-    padding: 20px 10px;
-    border: 1px solid var(--cyan);
-    background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(255, 46, 240, 0.08)), rgba(5, 0, 16, 0.95);
-    position: relative;
-  }
+/* ── TOP TABS ── */
+.tab-section{margin-bottom:1rem;}
+.tab-label{font-size:9px;letter-spacing:0.18em;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;}
+.tab-row{display:flex;gap:6px;flex-wrap:wrap;}
+.ttab{background:var(--bg2);border:1px solid var(--border-dim);border-radius:2px;padding:7px 18px;font-size:11px;cursor:pointer;color:var(--txt1);font-family:var(--mono);letter-spacing:0.12em;text-transform:uppercase;transition:all 0.15s;}
+.ttab:hover{color:var(--txt0);border-color:var(--txt2);}
+.ttab.act-both{background:var(--bg3);border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 8px var(--yellow-glow);}
+.ttab.act-ser{background:var(--bg3);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow);}
+.ttab.act-estar{background:var(--bg3);border-color:var(--magenta);color:var(--magenta);box-shadow:0 0 8px var(--magenta-glow);}
+.ttab.act-tense{background:var(--bg3);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 6px var(--cyan-glow);}
+.ttab.act-other{background:var(--bg3);border-color:var(--green);color:var(--green);}
 
-  header::before, header::after {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-color: var(--magenta);
-    border-style: solid;
-  }
-  header::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
-  header::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+/* ── MAIN GRID ── */
+.conj-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem;}
+@media(max-width:600px){.conj-grid{grid-template-columns:1fr;}}
+.conj-panel{border:2px solid;border-radius:3px;padding:1.1rem 1.25rem;background:var(--bg1);position:relative;overflow:hidden;}
+.conj-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.ser-panel{border-color:var(--cyan);box-shadow:0 0 20px var(--cyan-glow),inset 0 0 30px rgba(0,229,255,0.03);}
+.ser-panel::before{background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.estar-panel{border-color:var(--magenta);box-shadow:0 0 20px var(--magenta-glow),inset 0 0 30px rgba(212,0,255,0.03);}
+.estar-panel::before{background:linear-gradient(90deg,transparent,var(--magenta),transparent);}
+.panel-title{font-size:28px;font-weight:bold;letter-spacing:0.15em;margin-bottom:4px;}
+.ser-title{color:var(--cyan);text-shadow:0 0 15px var(--cyan-glow);}
+.estar-title{color:var(--magenta);text-shadow:0 0 15px var(--magenta-glow);}
+.panel-sub{font-size:10px;color:var(--txt1);letter-spacing:0.08em;margin-bottom:12px;}
+.panel-divider{border:none;border-top:1px dashed var(--border-dim);margin:10px 0 14px;}
+.crow{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--bg3);}
+.crow:last-child{border-bottom:none;}
+.pro{color:var(--txt1);font-size:12px;letter-spacing:0.06em;}
+.sv{color:var(--yellow);font-weight:bold;font-size:16px;letter-spacing:0.05em;text-shadow:0 0 10px var(--yellow-glow);}
+.sv-accent{color:var(--yellow2);}
+.ev{color:var(--yellow);font-weight:bold;font-size:16px;letter-spacing:0.05em;text-shadow:0 0 10px var(--yellow-glow);}
+.irreg-dot{color:var(--cyan);font-size:10px;margin-left:3px;}
+.estar-irreg-dot{color:var(--magenta);font-size:10px;margin-left:3px;}
 
-  h1 {
-    font-size: clamp(1.5rem, 5vw, 2.4rem);
-    font-weight: 900;
-    letter-spacing: 0.15em;
-    background: linear-gradient(90deg, #00f0ff, #ff2ef0, #fff200);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: titleGlow 3s ease-in-out infinite;
-  }
+/* ── USAGE BOX ── */
+.usage-box{border:1px solid var(--green);border-radius:3px;padding:1rem 1.25rem;background:var(--bg1);margin-bottom:1rem;border-left:3px solid var(--green);box-shadow:0 0 12px var(--green-glow);}
+.usage-title{font-size:11px;font-weight:bold;letter-spacing:0.18em;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:8px;text-transform:uppercase;}
+.usage-arrow{color:var(--green);}
+.usage-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:12px;line-height:1.6;}
+.usage-gt{color:var(--green2);flex-shrink:0;}
+.usage-label-ser{color:var(--cyan);font-weight:bold;letter-spacing:0.08em;}
+.usage-label-estar{color:var(--magenta);font-weight:bold;letter-spacing:0.08em;}
+.usage-label-doc{color:var(--yellow);font-weight:bold;letter-spacing:0.06em;}
+.usage-label-pl{color:var(--pink);font-weight:bold;letter-spacing:0.06em;}
+.usage-ex-ser{color:var(--cyan2);}
+.usage-ex-estar{color:var(--magenta2);}
+.usage-note{color:var(--txt1);}
+.irreg-legend{text-align:center;font-size:10px;color:var(--txt2);margin-top:8px;letter-spacing:0.1em;}
+.irreg-legend span{color:var(--cyan);}
 
-  @keyframes titleGlow {
-    0%, 100% { filter: brightness(1) hue-rotate(0deg); }
-    50% { filter: brightness(1.3) hue-rotate(20deg); }
-  }
+/* ── PANELS ── */
+.verb-panel{display:none;}
+.verb-panel.active{display:block;}
+.tense-panel{display:none;}
+.tense-panel.active{display:block;}
 
-  .subtitle {
-    font-size: 0.8rem;
-    color: var(--dim);
-    margin-top: 8px;
-    letter-spacing: 0.3em;
-  }
+/* ── SPLIT VIEW MODES ── */
+.single-wide{border:2px solid;border-radius:3px;padding:1.1rem 1.25rem;background:var(--bg1);position:relative;overflow:hidden;margin-bottom:1rem;}
+.single-wide::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.single-ser{border-color:var(--cyan);box-shadow:0 0 20px var(--cyan-glow);}
+.single-ser::before{background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.single-estar{border-color:var(--magenta);box-shadow:0 0 20px var(--magenta-glow);}
+.single-estar::before{background:linear-gradient(90deg,transparent,var(--magenta),transparent);}
 
-  .verb-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
+/* ── MNEMONICS TAB ── */
+.mn-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:600px){.mn-grid{grid-template-columns:1fr;}}
+.mn-block{border:2px solid;border-radius:3px;padding:1.1rem 1.25rem;background:var(--bg1);position:relative;overflow:hidden;}
+.mn-block::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.ser-mn{border-color:var(--cyan);box-shadow:0 0 15px var(--cyan-glow);}
+.ser-mn::before{background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.estar-mn{border-color:var(--magenta);box-shadow:0 0 15px var(--magenta-glow);}
+.estar-mn::before{background:linear-gradient(90deg,transparent,var(--magenta),transparent);}
+.mn-label{font-size:9px;letter-spacing:0.2em;color:var(--txt2);margin-bottom:8px;text-transform:uppercase;}
+.mn-eq{font-size:24px;font-weight:bold;letter-spacing:0.15em;margin-bottom:14px;}
+.ser-eq{color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow);}
+.estar-eq{color:var(--magenta);text-shadow:0 0 12px var(--magenta-glow);}
+.lrow{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end;margin:10px 0 14px;}
+.lbox{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.lchar{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:2px;font-size:20px;font-weight:bold;letter-spacing:0.05em;border:1px solid;}
+.lcancel{background:var(--bg3);color:var(--txt3);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;border-color:var(--border-dim);}
+.lkeep-ser{background:rgba(0,229,255,0.08);color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow);}
+.lkeep-estar{background:rgba(212,0,255,0.08);color:var(--magenta);border-color:var(--magenta);box-shadow:0 0 8px var(--magenta-glow);}
+.ladd-ser{background:var(--cyan);color:var(--bg0);border-color:var(--cyan2);box-shadow:0 0 14px var(--cyan-glow);}
+.ladd-estar{background:var(--magenta);color:#fff;border-color:var(--magenta2);box-shadow:0 0 14px var(--magenta-glow);}
+.llab{font-size:9px;color:var(--txt2);letter-spacing:0.06em;text-transform:uppercase;}
+.lop{font-size:20px;color:var(--txt2);margin-bottom:8px;align-self:center;}
+.lresult{font-size:38px;font-weight:bold;margin-bottom:4px;align-self:center;letter-spacing:0.1em;}
+.mn-rule{font-size:12px;line-height:1.75;padding:10px 14px;border-radius:2px;border-left:2px solid;}
+.ser-rule{background:rgba(0,229,255,0.05);color:var(--cyan2);border-color:var(--cyan);}
+.estar-rule{background:rgba(212,0,255,0.05);color:var(--magenta2);border-color:var(--magenta);}
 
-  .verb-btn {
-    background: rgba(15, 0, 32, 0.95);
-    border: 2px solid var(--dim);
-    color: var(--text);
-    padding: 12px 28px;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 0.2em;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
+/* ── ADJ SHIFT TABLE ── */
+.adj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+@media(max-width:600px){.adj-grid{grid-template-columns:1fr;}}
+.adj-card{border:1px solid;border-radius:2px;padding:10px 12px;}
+.adj-ser{border-color:var(--cyan);background:rgba(0,229,255,0.04);}
+.adj-estar{border-color:var(--magenta);background:rgba(212,0,255,0.04);}
+.adj-title{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px dashed;}
+.adj-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--bg3);font-size:12px;}
+.adj-row:last-child{border-bottom:none;}
 
-  .verb-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s;
-  }
+/* ── DOCTOR / PLACE ── */
+.dp-header{display:flex;align-items:center;gap:14px;margin-bottom:1rem;padding:10px 16px;border:1px solid;border-radius:2px;background:var(--bg2);}
+.dp-badge{font-size:18px;font-weight:bold;letter-spacing:0.25em;padding:6px 18px;border-radius:2px;border:2px solid;}
+.dp-badge-ser{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px var(--cyan-glow);}
+.dp-badge-estar{color:var(--magenta);border-color:var(--magenta);box-shadow:0 0 12px var(--magenta-glow);}
+.dp-desc{font-size:11px;color:var(--txt1);letter-spacing:0.05em;}
+.dd-wrap{margin-bottom:6px;}
+.dd-btn{width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border-dim);border-radius:2px;padding:9px 13px;font-size:12px;cursor:pointer;color:var(--txt1);display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);transition:all 0.15s;}
+.dd-btn:hover{background:var(--bg3);color:var(--txt0);}
+.dd-letter{display:inline-flex;width:28px;height:28px;border-radius:2px;font-size:14px;font-weight:bold;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;border:1px solid;}
+.dd-content{display:none;background:var(--bg1);border:1px solid var(--border-dim);border-top:none;border-radius:0 0 2px 2px;padding:10px 12px;}
+.dd-content.open{display:block;}
+.chev{transition:transform 0.2s;font-size:11px;color:var(--txt2);}
+.chev.open{transform:rotate(180deg);}
+.ex-card{background:var(--bg2);border:1px solid var(--border-dim);border-radius:2px;padding:10px 12px;margin-bottom:8px;border-left:2px solid;}
+.ex-sp{font-size:13px;font-style:italic;margin-bottom:4px;line-height:1.5;}
+.ex-en{font-size:11px;color:var(--txt1);margin-bottom:6px;padding-left:8px;border-left:1px solid var(--border-dim);}
+.ex-tag{font-size:9px;font-weight:bold;padding:2px 7px;border-radius:1px;border:1px solid;letter-spacing:0.06em;text-transform:uppercase;display:inline-block;}
 
-  .verb-btn:hover::before { transform: translateX(100%); }
+/* ── TRAPS ── */
+.trap-card{border-radius:2px;padding:11px 14px;margin-bottom:8px;border:1px solid;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;}
+.trap-tag{font-size:9px;font-weight:bold;padding:3px 8px;border-radius:2px;border:1px solid;letter-spacing:0.1em;white-space:nowrap;text-transform:uppercase;}
+.trap-title{font-size:11px;font-weight:bold;letter-spacing:0.06em;margin-bottom:4px;text-transform:uppercase;}
+.trap-body{font-size:11px;line-height:1.7;}
+.trap-note{font-size:10px;opacity:0.7;margin-top:4px;letter-spacing:0.03em;}
+.t-pink{background:rgba(255,45,155,0.06);border-color:rgba(255,45,155,0.3);color:var(--pink);}
+.t-yellow{background:rgba(245,230,66,0.05);border-color:rgba(245,230,66,0.25);color:var(--yellow);}
+.t-cyan{background:rgba(0,229,255,0.05);border-color:rgba(0,229,255,0.2);color:var(--cyan);}
+.t-green{background:rgba(0,255,159,0.05);border-color:rgba(0,255,159,0.2);color:var(--green);}
+.t-magenta{background:rgba(212,0,255,0.05);border-color:rgba(212,0,255,0.2);color:var(--magenta);}
 
-  .verb-btn.active[data-verb="ser"] {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    background: rgba(0, 240, 255, 0.12);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.15);
-  }
+/* ── MAP ── */
+.map-intro{font-size:11px;color:var(--green);margin-bottom:1rem;line-height:1.7;padding:10px 14px;background:rgba(0,255,159,0.04);border:1px solid rgba(0,255,159,0.2);border-radius:2px;border-left:2px solid var(--green);}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:480px){.map-grid{grid-template-columns:1fr;}}
+.map-card{border-radius:2px;border:1px solid var(--border-dim);background:var(--bg2);padding:11px 13px;border-left:3px solid;}
+.map-n{font-size:9px;font-weight:bold;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:5px;}
+.map-t{font-size:12px;font-weight:bold;color:var(--txt0);letter-spacing:0.06em;margin-bottom:5px;}
+.map-b{font-size:11px;color:var(--txt1);line-height:1.65;}
+.map-here{font-size:9px;padding:1px 7px;border-radius:20px;border:1px solid var(--green);color:var(--green);margin-left:6px;letter-spacing:0.08em;}
 
-  .verb-btn.active[data-verb="estar"] {
-    border-color: var(--magenta);
-    color: var(--magenta);
-    background: rgba(255, 46, 240, 0.12);
-    box-shadow: 0 0 20px rgba(255, 46, 240, 0.6), inset 0 0 20px rgba(255, 46, 240, 0.15);
-  }
-
-  .verb-btn.active[data-verb="both"] {
-    border-color: var(--yellow);
-    color: var(--yellow);
-    background: rgba(255, 242, 0, 0.12);
-    box-shadow: 0 0 20px rgba(255, 242, 0, 0.6), inset 0 0 20px rgba(255, 242, 0, 0.15);
-  }
-
-  .tense-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-
-  .tense-tab {
-    background: rgba(15, 0, 32, 0.95);
-    border: 1px solid var(--dim);
-    color: var(--dim);
-    padding: 8px 18px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-transform: uppercase;
-  }
-
-  .tense-tab.active {
-    background: rgba(0, 240, 255, 0.18);
-    border-color: var(--cyan);
-    color: var(--cyan);
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
-  }
-
-  .tense-tab:hover:not(.active) {
-    color: var(--text);
-    border-color: var(--text);
-  }
-
-  .chart-wrap {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 1fr;
-  }
-
-  .chart-wrap.split {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (max-width: 700px) {
-    .chart-wrap.split { grid-template-columns: 1fr; }
-  }
-
-  .verb-card {
-    border: 2px solid;
-    padding: 20px;
-    background: rgba(8, 0, 20, 0.98);
-    position: relative;
-    animation: cardIn 0.5s ease-out;
-  }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .verb-card.ser {
-    border-color: var(--cyan);
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
-  }
-
-  .verb-card.estar {
-    border-color: var(--magenta);
-    box-shadow: 0 0 30px rgba(255, 46, 240, 0.3);
-  }
-
-  .verb-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 1px dashed currentColor;
-    padding-bottom: 10px;
-    margin-bottom: 16px;
-  }
-
-  .verb-name {
-    font-size: 2rem;
-    font-weight: 900;
-    letter-spacing: 0.2em;
-  }
-
-  .verb-card.ser .verb-name { color: var(--cyan); }
-  .verb-card.estar .verb-name { color: var(--magenta); }
-
-  .verb-tag {
-    font-size: 0.7rem;
-    color: var(--dim);
-    letter-spacing: 0.2em;
-  }
-
-  .conjugation-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: transparent;
-  }
-
-  .conjugation-table tr {
-    border-bottom: 1px solid rgba(154, 138, 192, 0.2);
-    transition: background 0.2s;
-  }
-
-  .conjugation-table tr:hover {
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .conjugation-table td {
-    padding: 10px 8px;
-    font-size: 0.95rem;
-  }
-
-  .pronoun {
-    color: var(--dim);
-    width: 45%;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-
-  .form {
-    font-weight: bold;
-    font-size: 1.05rem;
-    text-align: right;
-    letter-spacing: 0.05em;
-  }
-
-  .verb-card.ser .form {
-    color: #a0faff;
-    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
-  }
-
-  .verb-card.estar .form {
-    color: #ffa8f5;
-    text-shadow: 0 0 8px rgba(255, 46, 240, 0.6);
-  }
-
-  .irregular {
-    color: var(--yellow) !important;
-    text-shadow: 0 0 10px rgba(255, 242, 0, 0.7) !important;
-  }
-
-  .irregular::after {
-    content: '◆';
-    font-size: 0.6rem;
-    margin-left: 4px;
-    vertical-align: super;
-    color: var(--yellow);
-  }
-
-  .notes {
-    margin-top: 24px;
-    padding: 16px;
-    border-left: 3px solid var(--green);
-    background: rgba(15, 0, 32, 0.95);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--text);
-  }
-
-  .notes-title {
-    color: var(--green);
-    font-weight: bold;
-    letter-spacing: 0.2em;
-    margin-bottom: 8px;
-    font-size: 0.8rem;
-    text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
-  }
-
-  .notes ul {
-    list-style: none;
-    padding-left: 0;
-  }
-
-  .notes li {
-    padding: 4px 0 4px 20px;
-    position: relative;
-    color: var(--text);
-  }
-
-  .notes li::before {
-    content: '>';
-    position: absolute;
-    left: 0;
-    color: var(--green);
-  }
-
-  .notes strong { color: var(--cyan); }
-  .notes em { color: var(--magenta); font-style: normal; }
-
-  .legend {
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--dim);
-    margin-top: 16px;
-    letter-spacing: 0.15em;
-  }
-
-  .legend .yellow { color: var(--yellow); }
+.divider{height:1px;background:var(--border-dim);margin:1rem 0;}
+.section-comment{font-size:10px;color:var(--txt2);letter-spacing:0.12em;margin-bottom:10px;}
 </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="bg-scan"></div>
+<div class="grid-bg"></div>
+<div class="app">
 
-  <div class="container">
-    <header>
-      <h1>SER // ESTAR</h1>
-      <div class="subtitle">◢ CONJUGATION MATRIX ◣ INDICATIVO ◆ PRETÉRITO ◆ IMPERFECTO ◣</div>
-    </header>
-
-    <div class="verb-toggle">
-      <button class="verb-btn active" data-verb="both">BOTH</button>
-      <button class="verb-btn" data-verb="ser">SER</button>
-      <button class="verb-btn" data-verb="estar">ESTAR</button>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-meta">
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">[ light ]</button>
     </div>
-
-    <div class="tense-tabs">
-      <button class="tense-tab active" data-tense="presente">Presente</button>
-      <button class="tense-tab" data-tense="preterito">Pretérito</button>
-      <button class="tense-tab" data-tense="imperfecto">Imperfecto</button>
-    </div>
-
-    <div class="chart-wrap split" id="chartWrap"></div>
-
-    <div class="notes" id="notes"></div>
-
-    <div class="legend">
-      <span class="yellow">◆</span> = IRREGULAR FORM
+    <div class="header-title">SER // ESTAR</div>
+    <div class="header-sub">
+      <span><span class="dot">&#9650;</span> CONJUGATION MATRIX</span>
+      <span><span class="dot">&#9650;</span> INDICATIVO</span>
+      <span><span class="dot">&#9670;</span> PRETÉRITO</span>
+      <span><span class="dot">&#9670;</span> IMPERFECTO</span>
+      <span><span class="dot">&#9658;</span> SUBJUNTIVO</span>
     </div>
   </div>
 
-<script>
-  const data = {
-    ser: {
-      label: 'to be (permanent)',
-      presente: { yo: 'soy', tu: 'eres', el: 'es', nos: 'somos', vos: 'sois', ellos: 'son' },
-      preterito: { yo: 'fui', tu: 'fuiste', el: 'fue', nos: 'fuimos', vos: 'fuisteis', ellos: 'fueron' },
-      imperfecto: { yo: 'era', tu: 'eras', el: 'era', nos: 'éramos', vos: 'erais', ellos: 'eran' },
-      irregular: {
-        presente: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos'],
-        preterito: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos'],
-        imperfecto: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos']
-      }
-    },
-    estar: {
-      label: 'to be (temporary)',
-      presente: { yo: 'estoy', tu: 'estás', el: 'está', nos: 'estamos', vos: 'estáis', ellos: 'están' },
-      preterito: { yo: 'estuve', tu: 'estuviste', el: 'estuvo', nos: 'estuvimos', vos: 'estuvisteis', ellos: 'estuvieron' },
-      imperfecto: { yo: 'estaba', tu: 'estabas', el: 'estaba', nos: 'estábamos', vos: 'estabais', ellos: 'estaban' },
-      irregular: {
-        presente: ['yo', 'tu', 'el', 'ellos'],
-        preterito: ['yo', 'tu', 'el', 'nos', 'vos', 'ellos'],
-        imperfecto: []
-      }
-    }
-  };
+  <!-- VERB SELECT -->
+  <div class="tab-section">
+    <div class="tab-label">// select verb</div>
+    <div class="tab-row">
+      <button class="ttab act-both" id="btn-both" onclick="switchVerb('both')">BOTH</button>
+      <button class="ttab" id="btn-ser" onclick="switchVerb('ser')">SER</button>
+      <button class="ttab" id="btn-estar" onclick="switchVerb('estar')">ESTAR</button>
+      <button class="ttab" id="btn-mnemonics" onclick="switchVerb('mnemonics')">MNEMONICS</button>
+      <button class="ttab" id="btn-doctor" onclick="switchVerb('doctor')">DOCTOR</button>
+      <button class="ttab" id="btn-place" onclick="switchVerb('place')">PLACE</button>
+      <button class="ttab" id="btn-traps" onclick="switchVerb('traps')">TRAPS</button>
+      <button class="ttab" id="btn-map" onclick="switchVerb('map')">MAP</button>
+    </div>
+  </div>
 
-  const pronouns = [
-    { key: 'yo', label: 'yo' },
-    { key: 'tu', label: 'tú' },
-    { key: 'el', label: 'él / ella / usted' },
-    { key: 'nos', label: 'nosotros' },
-    { key: 'vos', label: 'vosotros' },
-    { key: 'ellos', label: 'ellos / ustedes' }
-  ];
+  <!-- TENSE SELECT -->
+  <div class="tab-section">
+    <div class="tab-label">// select tense</div>
+    <div class="tab-row" id="tense-row">
+      <button class="ttab act-tense" id="tn-present" onclick="switchTense('present')">PRESENTE</button>
+      <button class="ttab" id="tn-preterite" onclick="switchTense('preterite')">PRETÉRITO</button>
+      <button class="ttab" id="tn-imperfect" onclick="switchTense('imperfect')">IMPERFECTO</button>
+      <button class="ttab" id="tn-subjunctive" onclick="switchTense('subjunctive')">SUBJUNTIVO</button>
+      <button class="ttab" id="tn-perfect" onclick="switchTense('perfect')">PLUSCUAMPERFECTO</button>
+    </div>
+  </div>
 
-  const notes = {
-    presente: {
-      title: 'PRESENTE // USAGE',
-      content: `
-        <li><strong>SER</strong> → identity, origin, profession, characteristics, time. <em>Soy profesor. Es lunes.</em></li>
-        <li><strong>ESTAR</strong> → location, emotions, temporary states, ongoing actions. <em>Estoy cansado. Está en Austin.</em></li>
-        <li>Memory trick: <strong>DOCTOR</strong> (Description, Occupation, Characteristic, Time, Origin, Relationship) = SER</li>
-        <li>Memory trick: <strong>PLACE</strong> (Position, Location, Action, Condition, Emotion) = ESTAR</li>
-      `
-    },
-    preterito: {
-      title: 'PRETÉRITO // USAGE',
-      content: `
-        <li><strong>Completed past actions</strong> with a defined beginning/end. <em>Fui al cine ayer.</em></li>
-        <li><strong>SER</strong> preterite = <strong>IR</strong> preterite (identical forms). Context tells you which verb it is.</li>
-        <li><em>Fui estudiante</em> (I was a student) vs <em>Fui a la tienda</em> (I went to the store).</li>
-        <li><strong>ESTAR</strong> preterite often implies a condition that happened and ended. <em>Estuve enfermo la semana pasada.</em></li>
-      `
-    },
-    imperfecto: {
-      title: 'IMPERFECTO // USAGE',
-      content: `
-        <li><strong>Ongoing, habitual, or background</strong> past actions. Used for descriptions, age, time, weather.</li>
-        <li><strong>SER</strong> imperfect → describing what something/someone <em>was like</em>. <em>Era alto y callado.</em></li>
-        <li><strong>ESTAR</strong> imperfect → describing states or locations in the past. <em>Estaba en casa cuando llamaste.</em></li>
-        <li>Key contrast: <em>Fui feliz</em> (I was happy — a defined period) vs <em>Era feliz</em> (I was happy — ongoing state).</li>
-      `
-    }
-  };
-
-  let currentVerb = 'both';
-  let currentTense = 'presente';
-
-  function renderCards() {
-    const wrap = document.getElementById('chartWrap');
-    wrap.innerHTML = '';
-    wrap.classList.toggle('split', currentVerb === 'both');
-
-    const verbs = currentVerb === 'both' ? ['ser', 'estar'] : [currentVerb];
-
-    verbs.forEach(v => {
-      const verbData = data[v];
-      const forms = verbData[currentTense];
-      const irregs = verbData.irregular[currentTense];
-
-      const rows = pronouns.map(p => {
-        const isIrr = irregs.includes(p.key);
-        return `
-          <tr>
-            <td class="pronoun">${p.label}</td>
-            <td class="form ${isIrr ? 'irregular' : ''}">${forms[p.key]}</td>
-          </tr>
-        `;
-      }).join('');
-
-      const card = document.createElement('div');
-      card.className = `verb-card ${v}`;
-      card.innerHTML = `
-        <div class="verb-header">
-          <div class="verb-name">${v.toUpperCase()}</div>
-          <div class="verb-tag">${verbData.label}</div>
+  <!-- BOTH VIEW -->
+  <div class="verb-panel active" id="panel-both">
+    <div class="tense-panel active" id="both-present">
+      <div class="conj-grid">
+        <div class="conj-panel ser-panel">
+          <div class="panel-title ser-title">SER</div>
+          <div class="panel-sub">to be (permanent)</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="sv">soy<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="sv">eres<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">es<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="sv">somos<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="sv">sois<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">son<span class="irreg-dot">&#9670;</span></span></div>
         </div>
-        <table class="conjugation-table">${rows}</table>
-      `;
-      wrap.appendChild(card);
-    });
+        <div class="conj-panel estar-panel">
+          <div class="panel-title estar-title">ESTAR</div>
+          <div class="panel-sub">to be (temporary)</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="ev">estoy<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="ev">estás<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">está<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="ev">estamos</span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="ev">estáis</span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">están<span class="estar-irreg-dot">&#9670;</span></span></div>
+        </div>
+      </div>
+      <div class="usage-box">
+        <div class="usage-title"><span class="usage-arrow">&#9658;</span> PRESENTE // USAGE <span class="usage-arrow">&#9668;</span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-ser">SER</span> <span class="usage-note">&rarr; identity, origin, profession, characteristics, time.&nbsp;</span><span class="usage-ex-ser">Soy profesor. Es lunes.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-estar">ESTAR</span> <span class="usage-note">&rarr; location, emotions, temporary states, ongoing actions.&nbsp;</span><span class="usage-ex-estar">Estoy cansado. Está en Austin.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">Memory trick: </span><span class="usage-label-doc">DOCTOR</span><span class="usage-note"> (Description, Occupation, Characteristic, Time, Origin, Relationship) = SER</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">Memory trick: </span><span class="usage-label-pl">PLACE</span><span class="usage-note"> (Position, Location, Action, Condition, Emotion) = ESTAR</span></span></div>
+      </div>
+      <div class="irreg-legend"><span>&#9670;</span> = IRREGULAR FORM</div>
+    </div>
+    <div class="tense-panel" id="both-preterite">
+      <div class="conj-grid">
+        <div class="conj-panel ser-panel">
+          <div class="panel-title ser-title">SER</div>
+          <div class="panel-sub">preterite &mdash; completed moment</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="sv">fui<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="sv">fuiste<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">fue<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="sv">fuimos<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="sv">fuisteis<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">fueron<span class="irreg-dot">&#9670;</span></span></div>
+        </div>
+        <div class="conj-panel estar-panel">
+          <div class="panel-title estar-title">ESTAR</div>
+          <div class="panel-sub">preterite &mdash; completed state</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="ev">estuve<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="ev">estuviste<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">estuvo<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="ev">estuvimos<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="ev">estuvisteis<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">estuvieron<span class="estar-irreg-dot">&#9670;</span></span></div>
+        </div>
+      </div>
+      <div class="usage-box">
+        <div class="usage-title"><span class="usage-arrow">&#9658;</span> PRETÉRITO // USAGE <span class="usage-arrow">&#9668;</span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-ser">SER</span> <span class="usage-note">&rarr; completed identity. lightning struck. it ended.&nbsp;</span><span class="usage-ex-ser">El evento fue un éxito.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-estar">ESTAR</span> <span class="usage-note">&rarr; completed state, bounded period.&nbsp;</span><span class="usage-ex-estar">Estuve en Austin tres días.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">stem </span><span class="usage-label-ser">SER</span><span class="usage-note">: fu- &nbsp;&nbsp; endings: e·iste·e·imos·isteis·eron &nbsp;&nbsp; no accent marks</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">stem </span><span class="usage-label-estar">ESTAR</span><span class="usage-note">: estuv- &nbsp;&nbsp; endings: e·iste·o·imos·isteis·ieron &nbsp;&nbsp; these endings = ALL irregular preterites</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span class="usage-note">fui is also the preterite of ir (to go) — context always resolves the meaning</span></div>
+      </div>
+      <div class="irreg-legend"><span>&#9670;</span> = IRREGULAR FORM</div>
+    </div>
+    <div class="tense-panel" id="both-imperfect">
+      <div class="conj-grid">
+        <div class="conj-panel ser-panel">
+          <div class="panel-title ser-title">SER</div>
+          <div class="panel-sub">imperfect &mdash; background state</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="sv">era<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="sv">eras<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">era<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="sv">éramos<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="sv">erais<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">eran<span class="irreg-dot">&#9670;</span></span></div>
+        </div>
+        <div class="conj-panel estar-panel">
+          <div class="panel-title estar-title">ESTAR</div>
+          <div class="panel-sub">imperfect &mdash; ongoing condition</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="ev">estaba</span></div>
+          <div class="crow"><span class="pro">tú</span><span class="ev">estabas</span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">estaba</span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="ev">estábamos</span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="ev">estabais</span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">estaban</span></div>
+        </div>
+      </div>
+      <div class="usage-box">
+        <div class="usage-title"><span class="usage-arrow">&#9658;</span> IMPERFECTO // USAGE <span class="usage-arrow">&#9668;</span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-ser">SER</span> <span class="usage-note">&rarr; ongoing identity or trait over a period.&nbsp;</span><span class="usage-ex-ser">De niño, era introvertido.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-estar">ESTAR</span> <span class="usage-note">&rarr; prolonged condition or state.&nbsp;</span><span class="usage-ex-estar">Siempre estaba cansado.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">imperfect = the backdrop. the weather during the whole trip. not the lightning strike.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">estar imperfect is fully regular: stem estab- + endings a·as·a·amos·ais·an</span></span></div>
+      </div>
+      <div class="irreg-legend"><span>&#9670;</span> = IRREGULAR FORM</div>
+    </div>
+    <div class="tense-panel" id="both-subjunctive">
+      <div class="conj-grid">
+        <div class="conj-panel ser-panel">
+          <div class="panel-title ser-title">SER</div>
+          <div class="panel-sub">subjunctive &mdash; uncertainty, desire</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="sv">sea<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="sv">seas<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">sea<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="sv">seamos<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="sv">seáis<span class="irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">sean<span class="irreg-dot">&#9670;</span></span></div>
+        </div>
+        <div class="conj-panel estar-panel">
+          <div class="panel-title estar-title">ESTAR</div>
+          <div class="panel-sub">subjunctive &mdash; desired state</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="ev">esté<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">tú</span><span class="ev">estés<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">esté<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="ev">estemos</span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="ev">estéis<span class="estar-irreg-dot">&#9670;</span></span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">estén<span class="estar-irreg-dot">&#9670;</span></span></div>
+        </div>
+      </div>
+      <div class="usage-box">
+        <div class="usage-title"><span class="usage-arrow">&#9658;</span> SUBJUNTIVO // USAGE <span class="usage-arrow">&#9668;</span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">triggers: querer que, esperar que, es importante que, ojalá, dudar que...</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-ser">SER</span><span class="usage-ex-ser">&nbsp;Quiero que el sistema sea robusto.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-estar">ESTAR</span><span class="usage-ex-estar">&nbsp;Espero que estés listo antes de las siete.</span></span></div>
+      </div>
+      <div class="irreg-legend"><span>&#9670;</span> = IRREGULAR FORM</div>
+    </div>
+    <div class="tense-panel" id="both-perfect">
+      <div class="conj-grid">
+        <div class="conj-panel ser-panel">
+          <div class="panel-title ser-title">SER</div>
+          <div class="panel-sub">past perfect &mdash; had been</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="sv" style="font-size:13px;">había sido</span></div>
+          <div class="crow"><span class="pro">tú</span><span class="sv" style="font-size:13px;">habías sido</span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="sv" style="font-size:13px;">había sido</span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="sv" style="font-size:13px;">habíamos sido</span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="sv" style="font-size:13px;">habíais sido</span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv" style="font-size:13px;">habían sido</span></div>
+        </div>
+        <div class="conj-panel estar-panel">
+          <div class="panel-title estar-title">ESTAR</div>
+          <div class="panel-sub">past perfect &mdash; had been</div>
+          <hr class="panel-divider">
+          <div class="crow"><span class="pro">yo</span><span class="ev" style="font-size:13px;">había estado</span></div>
+          <div class="crow"><span class="pro">tú</span><span class="ev" style="font-size:13px;">habías estado</span></div>
+          <div class="crow"><span class="pro">él / ella / usted</span><span class="ev" style="font-size:13px;">había estado</span></div>
+          <div class="crow"><span class="pro">nosotros</span><span class="ev" style="font-size:13px;">habíamos estado</span></div>
+          <div class="crow"><span class="pro">vosotros</span><span class="ev" style="font-size:13px;">habíais estado</span></div>
+          <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev" style="font-size:13px;">habían estado</span></div>
+        </div>
+      </div>
+      <div class="usage-box">
+        <div class="usage-title"><span class="usage-arrow">&#9658;</span> PLUSCUAMPERFECTO // USAGE <span class="usage-arrow">&#9668;</span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">haber (imperfect) + past participle (sido / estado)</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-note">sido / estado never change — only haber conjugates</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-ser">SER</span><span class="usage-ex-ser">&nbsp;El sistema ya había sido diseñado antes de que llegara el director.</span></span></div>
+        <div class="usage-row"><span class="usage-gt">&gt;</span><span><span class="usage-label-estar">ESTAR</span><span class="usage-ex-estar">&nbsp;El sistema ya había estado fallando antes de que nadie lo notara.</span></span></div>
+      </div>
+    </div>
+  </div>
 
-    const notesEl = document.getElementById('notes');
-    const n = notes[currentTense];
-    notesEl.innerHTML = `
-      <div class="notes-title">◣ ${n.title} ◤</div>
-      <ul>${n.content}</ul>
-    `;
-  }
+  <!-- SER ONLY -->
+  <div class="verb-panel" id="panel-ser">
+    <div class="tense-panel active" id="ser-present">
+      <div class="single-wide single-ser">
+        <div class="panel-title ser-title">SER &mdash; PRESENTE</div>
+        <div class="panel-sub">to be (permanent) &mdash; Latin: esse</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="sv">soy<span class="irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">tú</span><span class="sv">eres<span class="irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">es<span class="irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="sv">somos<span class="irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="sv">sois<span class="irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">son<span class="irreg-dot">&#9670;</span></span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="ser-preterite">
+      <div class="single-wide single-ser">
+        <div class="panel-title ser-title">SER &mdash; PRETÉRITO</div>
+        <div class="panel-sub">completed moment &mdash; stem: fu-</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="sv">fui</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="sv">fuiste</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">fue</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="sv">fuimos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="sv">fuisteis</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">fueron</span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="ser-imperfect">
+      <div class="single-wide single-ser">
+        <div class="panel-title ser-title">SER &mdash; IMPERFECTO</div>
+        <div class="panel-sub">background identity &mdash; stem: er-</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="sv">era</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="sv">eras</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">era</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="sv">éramos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="sv">erais</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">eran</span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="ser-subjunctive">
+      <div class="single-wide single-ser">
+        <div class="panel-title ser-title">SER &mdash; SUBJUNTIVO</div>
+        <div class="panel-sub">desire, doubt, hypothetical &mdash; stem: se-</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="sv">sea</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="sv">seas</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="sv">sea</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="sv">seamos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="sv">seáis</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv">sean</span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="ser-perfect">
+      <div class="single-wide single-ser">
+        <div class="panel-title ser-title">SER &mdash; PLUSCUAMPERFECTO</div>
+        <div class="panel-sub">had been &mdash; haber + sido</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="sv" style="font-size:13px;">había sido</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="sv" style="font-size:13px;">habías sido</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="sv" style="font-size:13px;">había sido</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="sv" style="font-size:13px;">habíamos sido</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="sv" style="font-size:13px;">habíais sido</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="sv" style="font-size:13px;">habían sido</span></div>
+      </div>
+    </div>
+  </div>
 
-  document.querySelectorAll('.verb-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.verb-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentVerb = btn.dataset.verb;
-      renderCards();
+  <!-- ESTAR ONLY -->
+  <div class="verb-panel" id="panel-estar">
+    <div class="tense-panel active" id="estar-present">
+      <div class="single-wide single-estar">
+        <div class="panel-title estar-title">ESTAR &mdash; PRESENTE</div>
+        <div class="panel-sub">to be (temporary) &mdash; Latin: stare</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="ev">estoy<span class="estar-irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">tú</span><span class="ev">estás<span class="estar-irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">está<span class="estar-irreg-dot">&#9670;</span></span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="ev">estamos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="ev">estáis</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">están<span class="estar-irreg-dot">&#9670;</span></span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="estar-preterite">
+      <div class="single-wide single-estar">
+        <div class="panel-title estar-title">ESTAR &mdash; PRETÉRITO</div>
+        <div class="panel-sub">completed state &mdash; stem: estuv-</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="ev">estuve</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="ev">estuviste</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">estuvo</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="ev">estuvimos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="ev">estuvisteis</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">estuvieron</span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="estar-imperfect">
+      <div class="single-wide single-estar">
+        <div class="panel-title estar-title">ESTAR &mdash; IMPERFECTO</div>
+        <div class="panel-sub">ongoing condition &mdash; stem: estab-</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="ev">estaba</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="ev">estabas</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">estaba</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="ev">estábamos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="ev">estabais</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">estaban</span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="estar-subjunctive">
+      <div class="single-wide single-estar">
+        <div class="panel-title estar-title">ESTAR &mdash; SUBJUNTIVO</div>
+        <div class="panel-sub">desired state &mdash; stem: est-</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="ev">esté</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="ev">estés</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="ev">esté</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="ev">estemos</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="ev">estéis</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev">estén</span></div>
+      </div>
+    </div>
+    <div class="tense-panel" id="estar-perfect">
+      <div class="single-wide single-estar">
+        <div class="panel-title estar-title">ESTAR &mdash; PLUSCUAMPERFECTO</div>
+        <div class="panel-sub">had been &mdash; haber + estado</div>
+        <hr class="panel-divider">
+        <div class="crow"><span class="pro">yo</span><span class="ev" style="font-size:13px;">había estado</span></div>
+        <div class="crow"><span class="pro">tú</span><span class="ev" style="font-size:13px;">habías estado</span></div>
+        <div class="crow"><span class="pro">él / ella / usted</span><span class="ev" style="font-size:13px;">había estado</span></div>
+        <div class="crow"><span class="pro">nosotros</span><span class="ev" style="font-size:13px;">habíamos estado</span></div>
+        <div class="crow"><span class="pro">vosotros</span><span class="ev" style="font-size:13px;">habíais estado</span></div>
+        <div class="crow"><span class="pro">ellos / ustedes</span><span class="ev" style="font-size:13px;">habían estado</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MNEMONICS -->
+  <div class="verb-panel" id="panel-mnemonics">
+    <div class="section-comment">// personal etymology mnemonics — built from the latin roots</div>
+    <div class="mn-grid">
+      <div class="mn-block ser-mn">
+        <div class="mn-label">// mnemonic_01 · ser · latin: esse</div>
+        <div class="mn-eq ser-eq">esse &rarr; ser</div>
+        <div class="lrow">
+          <div class="lbox"><div class="lchar lcancel">e</div><div class="llab">cancel</div></div>
+          <div class="lbox"><div class="lchar lcancel">s</div><div class="llab">cancel</div></div>
+          <div class="lbox"><div class="lchar lkeep-ser">s</div><div class="llab">keep</div></div>
+          <div class="lbox"><div class="lchar lkeep-ser">e</div><div class="llab">keep</div></div>
+          <span class="lop">+</span>
+          <div class="lbox"><div class="lchar ladd-ser">r</div><div class="llab">add</div></div>
+          <span class="lop">=</span>
+          <div class="lresult" style="color:var(--cyan);text-shadow:0 0 20px var(--cyan-glow);">ser</div>
+        </div>
+        <div class="mn-rule ser-rule"><span style="text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;opacity:0.5;">es</span><strong>se</strong> &rarr; cancel first two &rarr; keep <strong>se</strong> &rarr; add <strong>r</strong> &rarr; <strong>ser</strong><br>The r is the root. An anchor in the ground of permanent being.</div>
+      </div>
+      <div class="mn-block estar-mn">
+        <div class="mn-label">// mnemonic_02 · estar · latin: stare</div>
+        <div class="mn-eq estar-eq">stare &rarr; estar</div>
+        <div class="lrow">
+          <div class="lbox"><div class="lchar ladd-estar">e</div><div class="llab">wraps front</div></div>
+          <div class="lbox"><div class="lchar lkeep-estar">s</div><div class="llab">keep</div></div>
+          <div class="lbox"><div class="lchar lkeep-estar">t</div><div class="llab">keep</div></div>
+          <div class="lbox"><div class="lchar lkeep-estar">a</div><div class="llab">keep</div></div>
+          <div class="lbox"><div class="lchar lkeep-estar">r</div><div class="llab">keep</div></div>
+          <div class="lbox"><div class="lchar lcancel">e</div><div class="llab">moved ↑</div></div>
+          <span class="lop">=</span>
+          <div class="lresult" style="color:var(--magenta);text-shadow:0 0 20px var(--magenta-glow);">estar</div>
+        </div>
+        <div class="mn-rule estar-rule">star<strong><span style="text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;">e</span></strong> &rarr; trailing e cancelled &rarr; moves to front &rarr; e + star = <strong>estar</strong><br>Two bookends around a moment in time. Positioned. Standing. Temporary.</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-comment">// adjectives that shift meaning with each verb</div>
+    <div class="adj-grid">
+      <div class="adj-card adj-ser">
+        <div class="adj-title" style="color:var(--cyan);border-color:rgba(0,229,255,0.2);">SER + adj = permanent nature</div>
+        <div class="adj-row" style="color:var(--cyan);">ser aburrido<span style="color:var(--txt1);float:right;">= boring (character)</span></div>
+        <div class="adj-row" style="color:var(--cyan);">ser listo<span style="color:var(--txt1);float:right;">= clever</span></div>
+        <div class="adj-row" style="color:var(--cyan);">ser malo<span style="color:var(--txt1);float:right;">= evil / bad person</span></div>
+        <div class="adj-row" style="color:var(--cyan);">ser bueno<span style="color:var(--txt1);float:right;">= good person</span></div>
+        <div class="adj-row" style="color:var(--cyan);">ser seguro<span style="color:var(--txt1);float:right;">= safe by design</span></div>
+        <div class="adj-row" style="color:var(--cyan);">ser rico<span style="color:var(--txt1);float:right;">= wealthy</span></div>
+      </div>
+      <div class="adj-card adj-estar">
+        <div class="adj-title" style="color:var(--magenta);border-color:rgba(212,0,255,0.2);">ESTAR + adj = current condition</div>
+        <div class="adj-row" style="color:var(--magenta);">estar aburrido<span style="color:var(--txt1);float:right;">= bored (right now)</span></div>
+        <div class="adj-row" style="color:var(--magenta);">estar listo<span style="color:var(--txt1);float:right;">= ready</span></div>
+        <div class="adj-row" style="color:var(--magenta);">estar malo<span style="color:var(--txt1);float:right;">= sick</span></div>
+        <div class="adj-row" style="color:var(--magenta);">estar bueno<span style="color:var(--txt1);float:right;">= tasty / looks good</span></div>
+        <div class="adj-row" style="color:var(--magenta);">estar seguro<span style="color:var(--txt1);float:right;">= certain</span></div>
+        <div class="adj-row" style="color:var(--magenta);">estar rico<span style="color:var(--txt1);float:right;">= delicious</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCTOR -->
+  <div class="verb-panel" id="panel-doctor">
+    <div class="dp-header" style="border-color:rgba(0,229,255,0.2);">
+      <span class="dp-badge dp-badge-ser">D·O·C·T·O·R</span>
+      <span class="dp-desc">six permanent reasons to use SER &mdash; what a doctor records on a permanent chart</span>
+    </div>
+    <div id="doctor-dd"></div>
+  </div>
+
+  <!-- PLACE -->
+  <div class="verb-panel" id="panel-place">
+    <div class="dp-header" style="border-color:rgba(212,0,255,0.2);">
+      <span class="dp-badge dp-badge-estar">P·L·A·C·E</span>
+      <span class="dp-desc">five transient reasons to use ESTAR &mdash; what is currently happening in a place</span>
+    </div>
+    <div id="place-dd"></div>
+  </div>
+
+  <!-- TRAPS -->
+  <div class="verb-panel" id="panel-traps">
+    <div class="section-comment">// common errors and warnings</div>
+    <div class="trap-card t-yellow">
+      <span class="trap-tag" style="background:rgba(245,230,66,0.08);border-color:rgba(245,230,66,0.3);">ERR_01</span>
+      <div><div class="trap-title">tú preterite never ends in -s</div><div class="trap-body">fuiste ✓ &nbsp;·&nbsp; <span style="text-decoration:line-through;">fuistes</span> ✗ &nbsp;&nbsp;&nbsp; estuviste ✓ &nbsp;·&nbsp; <span style="text-decoration:line-through;">estuvistes</span> ✗</div><div class="trap-note">// English interference. Kill the -s instinct permanently.</div></div>
+    </div>
+    <div class="trap-card t-pink">
+      <span class="trap-tag" style="background:rgba(255,45,155,0.06);border-color:rgba(255,45,155,0.3);">ERR_02</span>
+      <div><div class="trap-title">nosotros ser preterite = fuimos, not fuemos</div><div class="trap-body">fuimos ✓ &nbsp;·&nbsp; <span style="text-decoration:line-through;">fuemos</span> ✗</div><div class="trap-note">// u carries through: fu → fui → fuimos</div></div>
+    </div>
+    <div class="trap-card t-yellow">
+      <span class="trap-tag" style="background:rgba(245,230,66,0.08);border-color:rgba(245,230,66,0.3);">ERR_03</span>
+      <div><div class="trap-title">ellos ends in -ieron, never -on</div><div class="trap-body">fueron ✓ &nbsp;·&nbsp; <span style="text-decoration:line-through;">fuieron</span> ✗ &nbsp;&nbsp; estuvieron ✓ &nbsp;·&nbsp; <span style="text-decoration:line-through;">estuvon</span> ✗</div><div class="trap-note">// -ieron is the ending. always.</div></div>
+    </div>
+    <div class="trap-card t-cyan">
+      <span class="trap-tag" style="background:rgba(0,229,255,0.05);border-color:rgba(0,229,255,0.2);">WARN_01</span>
+      <div><div class="trap-title">esta ≠ está</div><div class="trap-body">esta = this (adjective) &nbsp;·&nbsp; está = is (verb)</div><div class="trap-note">// one accent mark. two different words. always write the accent.</div></div>
+    </div>
+    <div class="trap-card t-pink">
+      <span class="trap-tag" style="background:rgba(255,45,155,0.06);border-color:rgba(255,45,155,0.3);">WARN_02</span>
+      <div><div class="trap-title">era vs. es — tense boundary</div><div class="trap-body">es = is (present) &nbsp;·&nbsp; era = was (imperfect)</div><div class="trap-note">// most common beginner slip. present vs. background past.</div></div>
+    </div>
+    <div class="trap-card t-green">
+      <span class="trap-tag" style="background:rgba(0,255,159,0.05);border-color:rgba(0,255,159,0.2);">NOTE_01</span>
+      <div><div class="trap-title">fui = "was" AND "went"</div><div class="trap-body">ser + ir share identical preterite forms in all persons</div><div class="trap-note">// "fui al salón" = went &nbsp;·&nbsp; "fui capitán" = was. context always resolves.</div></div>
+    </div>
+    <div class="trap-card t-magenta">
+      <span class="trap-tag" style="background:rgba(212,0,255,0.05);border-color:rgba(212,0,255,0.2);">WARN_03</span>
+      <div><div class="trap-title">ser aburrido ≠ estar aburrido</div><div class="trap-body">ser aburrido = boring person (permanent) &nbsp;·&nbsp; estar aburrido = bored (right now)</div><div class="trap-note">// the verb changes the claim about reality entirely.</div></div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="verb-panel" id="panel-map">
+    <div class="map-intro">// status: layer_01 in progress. all tenses of ser + estar targeted for instinctual fluency.<br>// everything above layer_01 depends on this foundation. build it right.</div>
+    <div class="map-grid">
+      <div class="map-card" style="border-left-color:var(--green);background:rgba(0,255,159,0.04);border-color:rgba(0,255,159,0.2);">
+        <div class="map-n" style="color:var(--green);">layer_01 <span class="map-here">you_are_here</span></div>
+        <div class="map-t" style="color:var(--green);">the two verbs of being</div>
+        <div class="map-b" style="color:var(--green);opacity:0.85;">ser + estar. DOCTOR + PLACE. Five tenses each. The philosophical foundation — permanent vs. temporary being.</div>
+      </div>
+      <div class="map-card" style="border-left-color:var(--pink);">
+        <div class="map-n" style="color:var(--pink);">layer_02</div>
+        <div class="map-t">nouns and articles</div>
+        <div class="map-b">el / la / un / una. Gender and number. Every noun has a gender — everything attached must match.</div>
+      </div>
+      <div class="map-card" style="border-left-color:var(--orange);">
+        <div class="map-n" style="color:var(--orange);">layer_03</div>
+        <div class="map-t">regular verbs</div>
+        <div class="map-b">Three families: -ar, -er, -ir. One model per family unlocks hundreds. Ser and estar were the hard ones.</div>
+      </div>
+      <div class="map-card" style="border-left-color:var(--yellow);">
+        <div class="map-n" style="color:var(--yellow);">layer_04</div>
+        <div class="map-t">core vocabulary</div>
+        <div class="map-b">500 high-frequency words = ~80% of everyday conversation. Pronouns, connectors, time words, question words.</div>
+      </div>
+      <div class="map-card" style="border-left-color:var(--magenta);">
+        <div class="map-n" style="color:var(--magenta);">layer_05</div>
+        <div class="map-t">sentence architecture</div>
+        <div class="map-b">Word order, negation, questions, object pronouns, reflexive verbs. Grammar becomes construction.</div>
+      </div>
+      <div class="map-card" style="border-left-color:var(--red);">
+        <div class="map-n" style="color:var(--red);">layer_06</div>
+        <div class="map-t">mood and nuance</div>
+        <div class="map-b">Subjunctive, commands, conditional, future. Where Spanish gets philosophical again. Rewards patience.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+const doctorData=[
+  {l:'D',t:'description — inherent qualities',c:'var(--pink)',cb:'rgba(255,45,155,0.08)',cd:'rgba(255,45,155,0.3)',ex:[{sp:'"El sistema <strong>es</strong> complejo por naturaleza."',en:'"The system is complex by nature."',w:'DOCTOR-D · intrinsic property'},{sp:'"La entropía <strong>es</strong> inevitable en sistemas cerrados."',en:'"Entropy is inevitable in closed systems."',w:'DOCTOR-D · permanent truth'}]},
+  {l:'O',t:'origin — where something comes from',c:'var(--orange)',cb:'rgba(255,159,0,0.08)',cd:'rgba(255,159,0,0.3)',ex:[{sp:'"<strong>Soy</strong> de Austin, Texas."',en:'"I am from Austin, Texas."',w:'DOCTOR-O · fixed origin'},{sp:'"La teoría de sistemas <strong>es</strong> de origen cibernético."',en:'"Systems theory is of cybernetic origin."',w:'DOCTOR-O · permanent historical fact'}]},
+  {l:'C',t:'classification — what kind of thing',c:'var(--yellow)',cb:'rgba(245,230,66,0.06)',cd:'rgba(245,230,66,0.25)',ex:[{sp:'"<strong>Soy</strong> capitán de banquetes."',en:'"I am a banquet captain."',w:'DOCTOR-C · occupational identity'},{sp:'"Un arquetipo sistémico <strong>es</strong> un patrón recurrente."',en:'"A systemic archetype is a recurring pattern."',w:'DOCTOR-C · definition'}]},
+  {l:'T',t:'time — dates, days, hours',c:'var(--green)',cb:'rgba(0,255,159,0.06)',cd:'rgba(0,255,159,0.2)',ex:[{sp:'"<strong>Son</strong> las ocho de la mañana."',en:'"It is eight in the morning."',w:'DOCTOR-T · time always ser · son for plural hours'},{sp:'"Hoy <strong>es</strong> martes."',en:'"Today is Tuesday."',w:'DOCTOR-T · day of week always ser'}]},
+  {l:'O',t:'ownership — who something belongs to',c:'var(--orange)',cb:'rgba(255,159,0,0.08)',cd:'rgba(255,159,0,0.3)',ex:[{sp:'"El diagrama <strong>es</strong> mío."',en:'"The diagram is mine."',w:'DOCTOR-O · possession as identity'},{sp:'"Este modelo <strong>es</strong> de Donella Meadows."',en:'"This model belongs to Donella Meadows."',w:'DOCTOR-O · ownership'}]},
+  {l:'R',t:'religion / deep identity affiliations',c:'var(--blue)',cb:'rgba(68,153,255,0.06)',cd:'rgba(68,153,255,0.2)',ex:[{sp:'"<strong>Soy</strong> católico — la fe <strong>es</strong> mi sistema operativo."',en:'"I am Catholic — faith is my operating system."',w:'DOCTOR-R · identity-level commitment'},{sp:'"<strong>Somos</strong> pensadores sistémicos por convicción."',en:'"We are systems thinkers by deep conviction."',w:'DOCTOR-R · core affiliation'}]}
+];
+const placeData=[
+  {l:'P',t:'position — where something is right now',c:'var(--pink)',cb:'rgba(255,45,155,0.06)',cd:'rgba(255,45,155,0.25)',ex:[{sp:'"<strong>Estoy</strong> en el salón de banquetes."',en:'"I am in the banquet hall."',w:'PLACE-P · physical location — always estar'},{sp:'"El diagrama <strong>está</strong> en la pizarra."',en:'"The diagram is on the whiteboard."',w:'PLACE-P · current position'}]},
+  {l:'L',t:'looks — current appearance',c:'var(--magenta)',cb:'rgba(212,0,255,0.06)',cd:'rgba(212,0,255,0.2)',ex:[{sp:'"El salón <strong>está</strong> impecable antes del evento."',en:'"The ballroom looks immaculate before the event."',w:'PLACE-L · current visual condition'},{sp:'"El sistema <strong>está</strong> elegante cuando sus bucles son visibles."',en:'"The system looks elegant when its loops are visible."',w:'PLACE-L · current appearance'}]},
+  {l:'A',t:'action — progressive, ongoing',c:'var(--green)',cb:'rgba(0,255,159,0.05)',cd:'rgba(0,255,159,0.2)',ex:[{sp:'"<strong>Estoy</strong> construyendo algo que importa."',en:'"I am building something that matters."',w:'PLACE-A · estar + gerund = always progressive'},{sp:'"Los capitanes <strong>están</strong> ajustando las variables en tiempo real."',en:'"The captains are adjusting variables in real time."',w:'PLACE-A · action unfolding now'}]},
+  {l:'C',t:'condition — physical or functional state',c:'var(--yellow)',cb:'rgba(245,230,66,0.05)',cd:'rgba(245,230,66,0.2)',ex:[{sp:'"<strong>Estoy</strong> cansado pero lúcido — el bucle sigue activo."',en:'"I am tired but lucid — the loop is still active."',w:'PLACE-C · current physical condition'},{sp:'"El sistema <strong>está</strong> saturado — necesita una válvula de escape."',en:'"The system is saturated — it needs a release valve."',w:'PLACE-C · functional state'}]},
+  {l:'E',t:'emotions — felt states',c:'var(--red)',cb:'rgba(255,68,85,0.06)',cd:'rgba(255,68,85,0.2)',ex:[{sp:'"<strong>Estoy</strong> asombrado por la elegancia de los sistemas emergentes."',en:'"I am astonished by the elegance of emergent systems."',w:'PLACE-E · emotion = current output'},{sp:'"<strong>Estamos</strong> motivados cuando propósito y proceso se alinean."',en:'"We are motivated when purpose and process align."',w:'PLACE-E · collective emotional state'}]}
+];
+
+function buildDD(data,cId){
+  const c=document.getElementById(cId);
+  data.forEach((item,i)=>{
+    const id='dd-'+cId+'-'+i;
+    const w=document.createElement('div');
+    w.className='dd-wrap';
+    w.innerHTML=`<button class="dd-btn" onclick="toggleDD('${id}',this)" style="border-left:2px solid ${item.c};">
+      <span style="display:flex;align-items:center;gap:0;">
+        <span class="dd-letter" style="background:${item.cb};color:${item.c};border-color:${item.cd};">${item.l}</span>
+        <span>${item.t}</span>
+      </span>
+      <span class="chev" id="chev-${id}">&#9660;</span>
+    </button>
+    <div class="dd-content" id="${id}" style="border-left:2px solid ${item.c};">
+      ${item.ex.map(e=>`<div class="ex-card" style="border-left-color:${item.c};">
+        <div class="ex-sp" style="color:${item.c};">${e.sp}</div>
+        <div class="ex-en">${e.en}</div>
+        <div class="ex-tag" style="background:${item.cb};color:${item.c};border-color:${item.cd};">${e.w}</div>
+      </div>`).join('')}
+    </div>`;
+    c.appendChild(w);
+  });
+}
+buildDD(doctorData,'doctor-dd');
+buildDD(placeData,'place-dd');
+
+function toggleDD(id,btn){
+  const el=document.getElementById(id);
+  const chev=document.getElementById('chev-'+id);
+  const open=el.classList.toggle('open');
+  if(chev)chev.classList.toggle('open',open);
+}
+
+let currentVerb='both';
+let currentTense='present';
+const tenseList=['present','preterite','imperfect','subjunctive','perfect'];
+const verbList=['both','ser','estar','mnemonics','doctor','place','traps','map'];
+
+function switchVerb(v){
+  verbList.forEach(x=>{
+    const p=document.getElementById('panel-'+x);
+    if(p)p.classList.toggle('active',x===v);
+    const b=document.getElementById('btn-'+x);
+    if(b){
+      b.classList.remove('act-both','act-ser','act-estar','act-other','act-tense');
+      if(x===v) b.classList.add(v==='both'?'act-both':v==='ser'?'act-ser':v==='estar'?'act-estar':'act-other');
+    }
+  });
+  currentVerb=v;
+  const tenseRow=document.getElementById('tense-row');
+  const showTense=['both','ser','estar'].includes(v);
+  tenseRow.style.display=showTense?'flex':'none';
+  if(showTense) switchTense(currentTense,true);
+}
+
+function switchTense(tense,fromVerb){
+  currentTense=tense;
+  tenseList.forEach(t=>{
+    const btn=document.getElementById('tn-'+t);
+    if(btn){btn.classList.remove('act-tense');if(t===tense)btn.classList.add('act-tense');}
+    ['both','ser','estar'].forEach(v=>{
+      const p=document.getElementById(v+'-'+t);
+      if(p)p.classList.toggle('active',t===tense);
     });
   });
+}
 
-  document.querySelectorAll('.tense-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tense-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentTense = tab.dataset.tense;
-      renderCards();
-    });
-  });
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('theme-btn').textContent=isDark?'[ dark ]':'[ light ]';
+}
 
-  renderCards();
+// init
+document.getElementById('tense-row').style.display='flex';
 </script>
 </body>
 </html>
