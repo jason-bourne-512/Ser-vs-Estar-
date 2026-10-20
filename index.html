@@ -70,45 +70,53 @@ button{font-family:var(--mono);}
 .sw{width:10px;height:10px;border-radius:50%;display:inline-block;}
 
 /* chart */
-.mood{margin-bottom:1rem;border:1px solid var(--border-dim);border-radius:3px;background:var(--bg1);overflow:hidden;}
-.mood-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--border-dim);}
-.mood-h b{font-size:12px;letter-spacing:.18em;color:var(--green);font-weight:normal;}
-.mood-h span{font-size:10px;color:var(--txt1);}
-.grid{display:grid;grid-template-columns:150px 62px repeat(6,minmax(0,1fr));}
-.ph{font-size:9px;color:var(--txt2);letter-spacing:.08em;padding:6px 6px;border-bottom:1px solid var(--bg3);text-align:center;}
-.tl{grid-row:span 2;padding:8px 10px;border-bottom:1px solid var(--bg3);border-right:1px solid var(--bg3);cursor:pointer;}
-.tl.one{grid-row:span 1;}
-.tl b{display:block;font-size:12px;color:var(--txt0);font-weight:normal;letter-spacing:.04em;}
-.tl small{display:block;font-size:10px;color:var(--txt1);margin-top:3px;}
-.tl:hover b{color:var(--yellow);}
-.vl{font-size:10px;letter-spacing:.12em;padding:8px 4px;border-bottom:1px solid var(--bg3);display:flex;align-items:center;justify-content:center;gap:3px;}
-.vl.ser{color:var(--cyan);} .vl.estar{color:var(--magenta);}
-.irr{font-size:9px;}
-.c{padding:8px 4px;border-bottom:1px solid var(--bg3);text-align:center;font-size:15px;position:relative;cursor:default;min-height:36px;}
+.seg{display:inline-flex;border:1px solid var(--border-dim);border-radius:2px;overflow:hidden;}
+.seg button{background:var(--bg2);border:none;padding:8px 26px;font-size:13px;letter-spacing:.18em;color:var(--txt2);cursor:pointer;}
+.seg button.ser.on{background:rgba(0,229,255,.1);color:var(--cyan);box-shadow:inset 0 -2px 0 var(--cyan);text-shadow:0 0 10px var(--cyan-glow);}
+.seg button.estar.on{background:rgba(212,0,255,.1);color:var(--magenta);box-shadow:inset 0 -2px 0 var(--magenta);text-shadow:0 0 10px var(--magenta-glow);}
+.qbtn{background:none;border:1px dashed var(--border-dim);border-radius:2px;padding:6px 12px;font-size:10px;letter-spacing:.14em;color:var(--txt1);cursor:pointer;text-transform:uppercase;}
+.qbtn.on{border-style:solid;border-color:var(--yellow);color:var(--yellow);}
+.chart-wrap{border:2px solid var(--vc);border-radius:3px;background:var(--bg1);box-shadow:0 0 22px var(--vglow);overflow:hidden;}
+.ser{--vc:var(--cyan);--vglow:var(--cyan-glow);} .estar{--vc:var(--magenta);--vglow:var(--magenta-glow);}
+.ct{width:100%;border-collapse:collapse;}
+.ct thead th{font-size:9px;font-weight:normal;letter-spacing:.12em;color:var(--txt2);text-align:left;padding:12px 10px 8px;border-bottom:1px solid var(--border-dim);text-transform:uppercase;}
+.ct .mrow td{font-size:10px;letter-spacing:.2em;color:var(--green);padding:16px 14px 6px;text-transform:uppercase;}
+.ct .mrow td span{color:var(--txt2);letter-spacing:.06em;text-transform:none;margin-left:10px;}
+.ct tr.tr th{text-align:left;padding:10px 14px;width:175px;border-bottom:1px solid var(--bg3);vertical-align:top;cursor:pointer;font-weight:normal;}
+.ct tr.tr th b{display:block;font-size:12px;font-weight:normal;color:var(--txt0);letter-spacing:.04em;}
+.ct tr.tr th small{display:block;font-size:10px;color:var(--txt2);}
+.ct tr.tr th:hover b{color:var(--vc);}
+.ct td.c{padding:10px;border-bottom:1px solid var(--bg3);font-size:16px;white-space:nowrap;vertical-align:top;letter-spacing:.03em;}
+.ct tr.tr:last-child th,.ct tr.tr:last-child td{border-bottom:none;}
 .c .pr{display:none;}
-.c .alt{display:block;font-size:10px;color:var(--txt1);margin-top:2px;}
+.c .alt{display:block;font-size:11px;}
+.c .alt .st,.c .alt .en{color:var(--txt2);text-shadow:none;}
 .c.dash{color:var(--txt3);}
-.st{color:var(--txt1);} .en{color:var(--yellow);text-shadow:0 0 8px var(--yellow-glow);} .whole{color:var(--yellow);text-shadow:0 0 8px var(--yellow-glow);}
-.acc{color:var(--pink)!important;text-shadow:0 0 8px var(--pink-glow);}
-.anc{position:absolute;left:4px;top:50%;width:5px;height:5px;border-radius:50%;transform:translateY(-50%);}
-.a-esse{background:var(--cyan);} .a-fu{background:var(--orange);} .a-sed{background:var(--green);} .a-sta{background:var(--magenta);}
-.covered .c:not(.dash):not(.shown) .w{visibility:hidden;}
+.st{color:var(--txt1);}
+.en,.whole{color:var(--vc);text-shadow:0 0 8px var(--vglow);}
+.chart-note{font-size:10px;color:var(--txt2);letter-spacing:.08em;margin-top:10px;}
+.chart-note .st,.chart-note .en{font-size:11px;}
 .covered .c:not(.dash):not(.shown){cursor:pointer;}
-.covered .c:not(.dash):not(.shown)::after{content:'· · ·';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--txt3);}
-.only-ser .estar-row,.only-estar .ser-row{display:none;}
-.only-ser .tl,.only-estar .tl{grid-row:span 1;}
-
-@media(max-width:760px){
-  .grid{grid-template-columns:repeat(3,minmax(0,1fr));}
-  .ph{display:none;}
-  .tl,.tl.one{grid-column:1/-1;grid-row:auto;border-right:none;background:var(--bg2);}
-  .only-ser .tl,.only-estar .tl{grid-row:auto;}
-  .vl{grid-column:1/-1;justify-content:flex-start;padding:6px 10px 2px;border-bottom:none;}
-  .c{border-bottom:none;padding:6px 4px 8px;}
-  .c .pr{display:block;font-size:9px;color:var(--txt2);margin-bottom:2px;}
+.covered .c:not(.dash):not(.shown) .w{display:none;}
+.c .ph{display:none;color:var(--txt3);letter-spacing:.2em;}
+.covered .c:not(.dash):not(.shown) .ph{display:inline;}
+@media(max-width:720px){
+  .ct thead{display:none;}
+  .ct,.ct tbody{display:block;}
+  .ct .mrow,.ct .mrow td{display:block;}
+  .ct tr.tr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--bg3);padding-bottom:6px;}
+  .ct tr.tr th{grid-column:1/-1;width:auto;border-bottom:none;padding:10px 14px 4px;}
+  .ct tr.tr th b,.ct tr.tr th small{display:inline;} .ct tr.tr th small{margin-left:8px;}
+  .ct td.c{border-bottom:none;padding:5px 14px;}
+  .ct td.c:nth-of-type(1){grid-row:2;grid-column:1;} .ct td.c:nth-of-type(2){grid-row:3;grid-column:1;} .ct td.c:nth-of-type(3){grid-row:4;grid-column:1;}
+  .ct td.c:nth-of-type(4){grid-row:2;grid-column:2;} .ct td.c:nth-of-type(5){grid-row:3;grid-column:2;} .ct td.c:nth-of-type(6){grid-row:4;grid-column:2;}
+  .c .pr{display:inline-block;width:58px;font-size:9px;color:var(--txt2);letter-spacing:.06em;}
+  .c .alt{margin-left:58px;}
 }
 
 /* tense detail */
+.vp .en,.vp .whole,.crow .en{color:var(--yellow);text-shadow:0 0 8px var(--yellow-glow);}
+.crow .f small .en,.crow .f small .st{color:var(--txt1);text-shadow:none;}
 .tchips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem;}
 .tchips .chip.on{background:var(--cyan);border-color:var(--cyan);color:var(--bg0);}
 .card{border:1px solid var(--border-dim);border-radius:3px;background:var(--bg1);padding:1rem 1.15rem;margin-bottom:.9rem;}
@@ -232,24 +240,13 @@ button{font-family:var(--mono);}
   <!-- CHART -->
   <section class="view on" id="v-chart">
     <div class="tools">
-      <button class="chip on" data-show="both">Both</button>
-      <button class="chip ser" data-show="ser">Ser</button>
-      <button class="chip estar" data-show="estar">Estar</button>
+      <div class="seg" id="seg"><button class="ser on" data-show="ser">SER</button><button class="estar" data-show="estar">ESTAR</button></div>
       <span class="sp"></span>
-      <button class="chip" id="cover">Cover forms</button>
-      <button class="chip" id="reveal" hidden>Reveal all</button>
-    </div>
-    <div class="legend">
-      <span><span class="st">stem</span><span class="en">ending</span></span>
-      <span><span class="acc">á é í ó ú</span> accent marks</span>
-      <span>◆ irregular</span>
-      <span><span class="sw a-esse"></span>esse · exist</span>
-      <span><span class="sw a-fu"></span>fu- · grow</span>
-      <span><span class="sw a-sed"></span>sedere · sit</span>
-      <span><span class="sw a-sta"></span>stare · stand</span>
+      <button class="qbtn" id="cover">quiz me</button>
+      <button class="qbtn" id="reveal" hidden>show all</button>
     </div>
     <div id="chart"></div>
-    <p class="note">Tap a tense name to open its page. With "Cover forms" on, tap a blank cell to check yourself.</p>
+    <p class="chart-note">// dim = stem &nbsp;·&nbsp; bright = ending &nbsp;·&nbsp; tap a tense for its page</p>
   </section>
 
   <!-- TENSES -->
@@ -458,37 +455,31 @@ const T = [
 const MOODS = {ind:['Indicativo','facts: what is, was, will be, would be'], sub:['Subjuntivo','wishes, doubts, feelings, hypotheticals'], comp:['Compuestos','haber + sido / estado'], imp:['Imperativo','commands']};
 
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-const acc = s => esc(s).replace(/[áéíóú]/g, m => `<span class="acc">${m}</span>`);
+const acc = s => esc(s);
 function form(f, compound){
   if(!f) return '';
   if(compound){ const i=f.indexOf(' '); return `<span class="en">${acc(f.slice(0,i))}</span> <span class="st">${acc(f.slice(i+1))}</span>`; }
   if(f.includes('|')){ const [a,b]=f.split('|'); return `<span class="st">${acc(a)}</span><span class="en">${acc(b)}</span>`; }
   return `<span class="whole">${acc(f)}</span>`;
 }
-const ancClass = {esse:'a-esse', fu:'a-fu', sed:'a-sed', sta:'a-sta'};
-
+let chartVerb='ser';
 function renderChart(){
-  let h='';
+  const v=chartVerb;
+  let h=`<div class="chart-wrap ${v}"><table class="ct"><thead><tr><th></th>${P.map(p=>`<th>${p}</th>`).join('')}</tr></thead><tbody>`;
   Object.keys(MOODS).forEach(m=>{
     const ts=T.filter(t=>t.mood===m); if(!ts.length) return;
-    h+=`<div class="mood"><div class="mood-h"><b>${MOODS[m][0].toUpperCase()}</b><span>${MOODS[m][1]}</span></div><div class="grid">`;
-    h+=`<div class="ph"></div><div class="ph"></div>`+P.map(p=>`<div class="ph">${p}</div>`).join('');
+    h+=`<tr class="mrow"><td colspan="7">${MOODS[m][0]}<span>// ${MOODS[m][1]}</span></td></tr>`;
     ts.forEach(t=>{
-      h+=`<div class="tl" data-t="${t.id}"><b>${t.es}</b><small>${t.en}</small></div>`;
-      [S,E].forEach(v=>{
-        const a = v===S ? t.serA : 'sta';
-        const irr = v===S ? t.serIrr : t.estarIrr;
-        h+=`<div class="vl ${v} ${v}-row">${v.toUpperCase()}${irr?'<span class="irr">◆</span>':''}</div>`;
-        t[v].forEach((f,i)=>{
-          const alt = t[v+'Alt'] ? `<span class="alt">${form(t[v+'Alt'][i])}</span>` : '';
-          if(!f){ h+=`<div class="c dash ${v}-row"><span class="pr">${P[i]}</span>—</div>`; return; }
-          h+=`<div class="c ${v}-row"><span class="anc ${ancClass[a]}"></span><span class="pr">${P[i]}</span><span class="w">${form(f,t.compound)}${alt}</span></div>`;
-        });
+      h+=`<tr class="tr"><th data-t="${t.id}"><b>${t.es}</b><small>${t.en.split(':')[0]}</small></th>`;
+      t[v].forEach((f,i)=>{
+        if(!f){ h+=`<td class="c dash"><span class="pr">${P[i]}</span>—</td>`; return; }
+        const alt=t[v+'Alt']?`<span class="alt">${form(t[v+'Alt'][i])}</span>`:'';
+        h+=`<td class="c"><span class="pr">${P[i].split(' / ')[0]}</span><span class="w">${form(f,t.compound)}${alt}</span><span class="ph">···</span></td>`;
       });
+      h+=`</tr>`;
     });
-    h+=`</div></div>`;
   });
-  document.getElementById('chart').innerHTML=h;
+  document.getElementById('chart').innerHTML=h+`</tbody></table></div>`;
 }
 
 function renderDetail(id){
@@ -636,18 +627,20 @@ document.getElementById('nav').addEventListener('click',e=>{const b=e.target.clo
 renderChart();
 const chart=document.getElementById('chart');
 chart.addEventListener('click',e=>{
-  const tl=e.target.closest('.tl'); if(tl){renderDetail(tl.dataset.t);show('tenses');window.scrollTo(0,0);return;}
+  const th=e.target.closest('th[data-t]'); if(th){renderDetail(th.dataset.t);show('tenses');window.scrollTo(0,0);return;}
   const c=e.target.closest('.c'); if(c&&chart.classList.contains('covered')) c.classList.add('shown');
 });
-document.querySelectorAll('[data-show]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('[data-show]').forEach(x=>x.classList.toggle('on',x===b));
-  chart.classList.toggle('only-ser',b.dataset.show==='ser');
-  chart.classList.toggle('only-estar',b.dataset.show==='estar');
-}));
+document.getElementById('seg').addEventListener('click',e=>{
+  const b=e.target.closest('[data-show]'); if(!b) return;
+  chartVerb=b.dataset.show;
+  document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('on',x===b));
+  renderChart();
+});
 const cover=document.getElementById('cover'), reveal=document.getElementById('reveal');
 cover.addEventListener('click',()=>{
   const on=!chart.classList.contains('covered');
   chart.classList.toggle('covered',on); cover.classList.toggle('on',on); reveal.hidden=!on;
+  cover.textContent=on?'stop quiz':'quiz me';
   chart.querySelectorAll('.shown').forEach(c=>c.classList.remove('shown'));
 });
 reveal.addEventListener('click',()=>chart.querySelectorAll('.c').forEach(c=>c.classList.add('shown')));
